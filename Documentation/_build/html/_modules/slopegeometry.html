@@ -1,0 +1,655 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>slopegeometry &mdash; BIMs Geometry Generator 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="BIMs Geometry Generator 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> BIMs Geometry Generator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BIMs Geometry Generator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>slopegeometry</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for slopegeometry</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Module for defining the class related to the slope geometry.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<span class="c1"># %%</span>
+<div class="viewcode-block" id="AnthropicSlope"><a class="viewcode-back" href="../slopegeometry.html#slopegeometry.AnthropicSlope">[docs]</a><span class="k">class</span> <span class="nc">AnthropicSlope</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;Creates an instance of an object that defines the geometrical frame</span>
+<span class="sd">    of the slope to perform the analysis.</span>
+
+<span class="sd">    The geometry of the slope is as follow:</span>
+<span class="sd">        * It is a right slope, i.e. its face points to the right side.</span>
+<span class="sd">        * Crown and toe planes are horizontal.</span>
+<span class="sd">        * The face of the slope is continuous, ie, it has not berms.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        slopeHeight (`int` or `float`): Height of the slope, ie, vertical\</span>
+<span class="sd">            length betwen crown and toe planes.</span>
+<span class="sd">        slopeDip ((2, ) `tuple`, `list` or `numpy.ndarray`): Both horizontal\</span>
+<span class="sd">            and vertical components of the slope inclination given in that\</span>
+<span class="sd">            order.</span>
+<span class="sd">        crownDist (`int` or `float`): Length of the horizontal plane in\</span>
+<span class="sd">            the crown of the slope.</span>
+<span class="sd">        toeDist (`int` or `float`): Length of the horizontal plane in the\</span>
+<span class="sd">            toe of the slope.</span>
+<span class="sd">        maxDepth (`int` or `float` or `None`): Length of the maximum depth the\</span>
+<span class="sd">            slope can reach.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The class ``slopegeometry`` requires `NumPy &lt;http://www.numpy.org/&gt;`_\</span>
+<span class="sd">        and `Matplotlib &lt;https://matplotlib.org/&gt;`_.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; slopeGeometry = AnthropicSlope(12, [1, 1.5], 10, 10)</span>
+<span class="sd">        &gt;&gt;&gt; slopeGeometry.__dict__.keys()</span>
+<span class="sd">        dict_keys([&#39;slopeHeight&#39;, &#39;slopeDip&#39;, &#39;crownDist&#39;, &#39;toeDist&#39;,</span>
+<span class="sd">                   &#39;maxDepth&#39;, &#39;boundCoords&#39;])</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slopeHeight</span><span class="p">,</span> <span class="n">slopeDip</span><span class="p">,</span> <span class="n">crownDist</span><span class="p">,</span> <span class="n">toeDist</span><span class="p">,</span>
+                 <span class="n">maxDepth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for initializing the attributes of the class.&#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span> <span class="o">=</span> <span class="n">slopeHeight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slopeDip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">slopeDip</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crownDist</span> <span class="o">=</span> <span class="n">crownDist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">toeDist</span> <span class="o">=</span> <span class="n">toeDist</span>
+        <span class="c1"># Obtaining the maximum depth of the slope from the toe</span>
+        <span class="k">if</span> <span class="n">maxDepth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxDepth</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">maxDepth</span> <span class="o">=</span> <span class="n">maxDepth</span>
+        <span class="c1"># Defining the boundary coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defineBoundary</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AnthropicSlope.maxDepth"><a class="viewcode-back" href="../slopegeometry.html#slopegeometry.AnthropicSlope.maxDepth">[docs]</a>    <span class="k">def</span> <span class="nf">maxDepth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to obtain the maximum depth of a slope where a circular</span>
+<span class="sd">        slope failure analysis can be performed.</span>
+
+<span class="sd">        The maximum depth is such that the biggest circle satisfished the\</span>
+<span class="sd">        following conditions:</span>
+<span class="sd">            * It is tangent to the bottom.</span>
+<span class="sd">            * crosses both the extreme points at the crown and toe.</span>
+<span class="sd">            * It is orthogonal to the crown plane.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            maxDepth (`int` or `float`): Maximum depth of the slope\</span>
+<span class="sd">                measured vertically from the toe plane.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry = AnthropicSlope(12, [1, 1.5], 10, 10)</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry.maxDepth()</span>
+<span class="sd">            4.571428571428573</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="c1"># Origin of auxiliar coordinates at the begin of the slope-toe</span>
+        <span class="c1"># Coordinates of the end of the slope-toe</span>
+        <span class="n">extremeToePointVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">toeDist</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># Horizontal distance of the slope face</span>
+        <span class="n">slopeDist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeDip</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeDip</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Coordinates of the begin of the slope-crown</span>
+        <span class="n">extremeCrownPointVec</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">slopeDist</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">crownDist</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span><span class="p">)</span>
+        <span class="c1"># Distance between the two extreme points</span>
+        <span class="n">differenceVec</span> <span class="o">=</span> <span class="n">extremeToePointVec</span> <span class="o">-</span> <span class="n">extremeCrownPointVec</span>
+        <span class="n">distExtrPts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">differenceVec</span><span class="p">)</span>
+        <span class="c1"># Radius of the largest circle</span>
+        <span class="n">maximumCircleRadius</span> <span class="o">=</span> <span class="n">distExtrPts</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">distExtrPts</span><span class="o">/</span><span class="n">differenceVec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Toe depth is the difference between maximum-circle radius and</span>
+        <span class="c1"># the slope-height</span>
+        <span class="n">maxDepth</span> <span class="o">=</span> <span class="n">maximumCircleRadius</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span>
+        <span class="c1"># Setting the attribute to the instanced object.</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;maxDepth&#39;</span><span class="p">,</span> <span class="n">maxDepth</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">maxDepth</span></div>
+
+<div class="viewcode-block" id="AnthropicSlope.defineBoundary"><a class="viewcode-back" href="../slopegeometry.html#slopegeometry.AnthropicSlope.defineBoundary">[docs]</a>    <span class="k">def</span> <span class="nf">defineBoundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to obtain the coordinates of the boundary vertices of the</span>
+<span class="sd">        slope and plot it if it is wanted.</span>
+
+<span class="sd">        The origin of the coordinates is in the corner of the bottom with the\</span>
+<span class="sd">        back of the slope. The coordinates define a close polygon, ie, the\</span>
+<span class="sd">        first pair of coordinates is the same than the last one.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (`numpy.ndarray`): Coordinates of the boundary vertices of the\</span>
+<span class="sd">                slope.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry = AnthropicSlope(12, [1, 1.5], 10, 10)</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry.defineBoundary()</span>
+<span class="sd">            array([[  0.        ,   0.        ],</span>
+<span class="sd">                   [ 28.        ,   0.        ],</span>
+<span class="sd">                   [ 28.        ,   4.57142857],</span>
+<span class="sd">                   [ 18.        ,   4.57142857],</span>
+<span class="sd">                   [ 10.        ,  16.57142857],</span>
+<span class="sd">                   [  0.        ,  16.57142857],</span>
+<span class="sd">                   [  0.        ,   0.        ]])</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="c1"># Slope-face horizontal projection (horizontal distance)</span>
+        <span class="n">slopeDist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeDip</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeDip</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Creating the contour</span>
+        <span class="n">boundCoords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                 <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">crownDist</span> <span class="o">+</span> <span class="n">slopeDist</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">toeDist</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                 <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">crownDist</span> <span class="o">+</span> <span class="n">slopeDist</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">toeDist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxDepth</span><span class="p">],</span>
+                 <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">crownDist</span> <span class="o">+</span> <span class="n">slopeDist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxDepth</span><span class="p">],</span>
+                 <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">crownDist</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxDepth</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxDepth</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span><span class="p">)],</span>
+                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+        <span class="c1"># Setting the attribute to the instanced object.</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;boundCoords&#39;</span><span class="p">,</span> <span class="n">boundCoords</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">boundCoords</span></div>
+
+<div class="viewcode-block" id="AnthropicSlope.plotSlope"><a class="viewcode-back" href="../slopegeometry.html#slopegeometry.AnthropicSlope.plotSlope">[docs]</a>    <span class="k">def</span> <span class="nf">plotSlope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for generating a graphic of the slope boundary.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry = AnthropicSlope(12, [1, 1.5], 10, 10)</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry.plotSlope()</span>
+
+<span class="sd">            .. plot::</span>
+
+<span class="sd">                from slopegeometry import AnthropicSlope</span>
+<span class="sd">                slopeGeometry = AnthropicSlope(12, [1, 1.5], 10, 10)</span>
+<span class="sd">                slopeGeometry.plotSlope()</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-k&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;.k&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">return</span></div></div>
+
+
+<span class="c1"># %%</span>
+<div class="viewcode-block" id="NaturalSlope"><a class="viewcode-back" href="../slopegeometry.html#slopegeometry.NaturalSlope">[docs]</a><span class="k">class</span> <span class="nc">NaturalSlope</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;Creates an instance of an object that defines the geometrical frame</span>
+<span class="sd">    of the slope to perform the analysis.</span>
+
+<span class="sd">    The geometry of the slope is as follow:</span>
+<span class="sd">        * It is a right slope, i.e. its face points to the right side.</span>
+<span class="sd">        * The slope is defined with its surface&#39;s coordinates.</span>
+<span class="sd">        * The surface is defined as a polyline such that each segment&#39;s slope\</span>
+<span class="sd">            are always zero or negative.</span>
+<span class="sd">        * The coordinates&#39; order is such that the highest (and leftmost) point\</span>
+<span class="sd">            is the first one, and the lowest (and rightmost) is the last one.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        surfaceCoords (`numpy.ndarray`): Coordinates of the surface&#39;s\</span>
+<span class="sd">            vertices of the slope.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The class ``NaturalSlope`` requires `NumPy &lt;http://www.numpy.org/&gt;`_\</span>
+<span class="sd">        and `Matplotlib &lt;https://matplotlib.org/&gt;`_.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">        &gt;&gt;&gt; surfaceCoords = array([[  0.        ,  16.57142857],</span>
+<span class="sd">                                   [ 10.        ,  16.57142857],</span>
+<span class="sd">                                   [ 18.        ,   4.57142857],</span>
+<span class="sd">                                   [ 28.        ,   4.57142857],</span>
+<span class="sd">                                   [ 28.        ,   0.        ]])</span>
+<span class="sd">        &gt;&gt;&gt; slopeGeometry = NaturalSlope(surfaceCoords)</span>
+<span class="sd">        &gt;&gt;&gt; slopeGeometry.__dict__.keys()</span>
+<span class="sd">        dict_keys([&#39;surfaceCoords&#39;, &#39;slopeHeight&#39;, &#39;maxDepth&#39;, &#39;boundCoords&#39;])</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surfaceCoords</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for initializing the attributes of the class.&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surfaceCoords</span> <span class="o">=</span> <span class="n">surfaceCoords</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span> <span class="o">=</span> <span class="n">surfaceCoords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">surfaceCoords</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># Obtaining the maximum depth of the slope from the toe</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxDepth</span><span class="p">()</span>
+        <span class="c1"># Defining the boundary coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defineBoundary</span><span class="p">()</span>
+
+<div class="viewcode-block" id="NaturalSlope.maxDepth"><a class="viewcode-back" href="../slopegeometry.html#slopegeometry.NaturalSlope.maxDepth">[docs]</a>    <span class="k">def</span> <span class="nf">maxDepth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to obtain the maximum depth of a slope where a circular</span>
+<span class="sd">        slope failure analysis can be performed.</span>
+
+<span class="sd">        The maximum depth is such that the biggest circle satisfished the\</span>
+<span class="sd">        following conditions:</span>
+<span class="sd">            * It is tangent to the bottom.</span>
+<span class="sd">            * crosses both the extreme points at the crown and toe.</span>
+<span class="sd">            * It is orthogonal to the crown plane.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            maxDepth (`int` or `float`): Maximum depth of the slope\</span>
+<span class="sd">                measured vertically from the toe plane.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; surfaceCoords = array([[  0.        ,  16.57142857],</span>
+<span class="sd">                                       [ 10.        ,  16.57142857],</span>
+<span class="sd">                                       [ 18.        ,   4.57142857],</span>
+<span class="sd">                                       [ 28.        ,   4.57142857]])</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry = NaturalSlope(surfaceCoords)</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry.maxDepth()</span>
+<span class="sd">            4.571428571428573</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="c1"># Distance between the two extreme points</span>
+        <span class="n">differenceVec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surfaceCoords</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">surfaceCoords</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">distExtrPts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">differenceVec</span><span class="p">)</span>
+        <span class="c1"># Radius of the largest circle</span>
+        <span class="n">maximumCircleRadius</span> <span class="o">=</span> <span class="n">distExtrPts</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">distExtrPts</span><span class="o">/</span><span class="n">differenceVec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Toe depth is the difference between maximum-circle radius and</span>
+        <span class="c1"># the slope-height</span>
+        <span class="n">maxDepth</span> <span class="o">=</span> <span class="n">maximumCircleRadius</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span>
+        <span class="c1"># Setting the attribute to the instanced object.</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;maxDepth&#39;</span><span class="p">,</span> <span class="n">maxDepth</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">maxDepth</span></div>
+
+<div class="viewcode-block" id="NaturalSlope.defineBoundary"><a class="viewcode-back" href="../slopegeometry.html#slopegeometry.NaturalSlope.defineBoundary">[docs]</a>    <span class="k">def</span> <span class="nf">defineBoundary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to obtain the coordinates of the boundary vertices of the</span>
+<span class="sd">        slope and plot it if it is wanted.</span>
+
+<span class="sd">        The origin of the coordinates is in the corner of the bottom with the\</span>
+<span class="sd">        back of the slope. The coordinates define a close polygon, ie, the\</span>
+<span class="sd">        first pair of coordinates is the same than the last one.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (`numpy.ndarray`): Coordinates of the boundary vertices of the\</span>
+<span class="sd">                slope.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; surfaceCoords = array([[  0.        ,  16.57142857],</span>
+<span class="sd">                                       [ 10.        ,  16.57142857],</span>
+<span class="sd">                                       [ 18.        ,   4.57142857],</span>
+<span class="sd">                                       [ 28.        ,   4.57142857]])</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry = NaturalSlope(surfaceCoords)</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry.defineBoundary()</span>
+<span class="sd">            array([[  0.        ,   0.        ],</span>
+<span class="sd">                   [  0.        ,  16.57142857],</span>
+<span class="sd">                   [ 10.        ,  16.57142857],</span>
+<span class="sd">                   [ 18.        ,   4.57142857],</span>
+<span class="sd">                   [ 28.        ,   4.57142857],</span>
+<span class="sd">                   [ 28.        ,   0.        ],</span>
+<span class="sd">                   [  0.        ,   0.        ]])</span>
+
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; surfaceCoords = array([[-2.4900, 18.1614],</span>
+<span class="sd">                                       [0.1022, 17.8824],</span>
+<span class="sd">                                       [1.6975, 17.2845],</span>
+<span class="sd">                                       [3.8909, 15.7301],</span>
+<span class="sd">                                       [5.8963, 14.3090],</span>
+<span class="sd">                                       [8.1183, 13.5779],</span>
+<span class="sd">                                       [9.8663, 13.0027],</span>
+<span class="sd">                                       [13.2865, 3.6058],</span>
+<span class="sd">                                       [20.2865, 3.6058],</span>
+<span class="sd">                                       [21.4347, 3.3231],</span>
+<span class="sd">                                       [22.2823, 2.7114],</span>
+<span class="sd">                                       [23.4751, 2.2252],</span>
+<span class="sd">                                       [24.6522, 1.2056],</span>
+<span class="sd">                                       [25.1701, 0.2488]])</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry = NaturalSlope(surfaceCoords)</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry.defineBoundary()</span>
+<span class="sd">            array([[  0.00000000e+00,   0.00000000e+00],</span>
+<span class="sd">                   [  0.00000000e+00,   1.96301237e+01],</span>
+<span class="sd">                   [  2.59220000e+00,   1.93511237e+01],</span>
+<span class="sd">                   [  4.18750000e+00,   1.87532237e+01],</span>
+<span class="sd">                   [  6.38090000e+00,   1.71988237e+01],</span>
+<span class="sd">                   [  8.38630000e+00,   1.57777237e+01],</span>
+<span class="sd">                   [  1.06083000e+01,   1.50466237e+01],</span>
+<span class="sd">                   [  1.23563000e+01,   1.44714237e+01],</span>
+<span class="sd">                   [  1.57765000e+01,   5.07452373e+00],</span>
+<span class="sd">                   [  2.27765000e+01,   5.07452373e+00],</span>
+<span class="sd">                   [  2.39247000e+01,   4.79182373e+00],</span>
+<span class="sd">                   [  2.47723000e+01,   4.18012373e+00],</span>
+<span class="sd">                   [  2.59651000e+01,   3.69392373e+00],</span>
+<span class="sd">                   [  2.71422000e+01,   2.67432373e+00],</span>
+<span class="sd">                   [  2.76601000e+01,   1.71752373e+00],</span>
+<span class="sd">                   [  2.76601000e+01,   6.66133815e-16],</span>
+<span class="sd">                   [  0.00000000e+00,   0.00000000e+00]])</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="c1"># Obtaining the origin vector to move the surface</span>
+        <span class="n">originVec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">surfaceCoords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">surfaceCoords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxDepth</span><span class="p">])</span>
+
+        <span class="c1"># Creating the contour</span>
+        <span class="n">extraCoords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">surfaceCoords</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                 <span class="bp">self</span><span class="o">.</span><span class="n">surfaceCoords</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxDepth</span><span class="p">],</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">surfaceCoords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                 <span class="bp">self</span><span class="o">.</span><span class="n">surfaceCoords</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">slopeHeight</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxDepth</span><span class="p">]])</span>
+        <span class="n">boundCoords</span> <span class="o">=</span> \
+            <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">surfaceCoords</span><span class="p">,</span> <span class="n">extraCoords</span><span class="p">))</span> <span class="o">-</span> <span class="n">originVec</span>
+        <span class="n">boundCoords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">boundCoords</span><span class="p">))</span>
+
+        <span class="c1"># Setting the attribute to the instanced object.</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;boundCoords&#39;</span><span class="p">,</span> <span class="n">boundCoords</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">boundCoords</span></div>
+
+<div class="viewcode-block" id="NaturalSlope.plotSlope"><a class="viewcode-back" href="../slopegeometry.html#slopegeometry.NaturalSlope.plotSlope">[docs]</a>    <span class="k">def</span> <span class="nf">plotSlope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for generating a graphic of the slope boundary.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; surfaceCoords = array([[  0.        ,  16.57142857],</span>
+<span class="sd">                                       [ 10.        ,  16.57142857],</span>
+<span class="sd">                                       [ 18.        ,   4.57142857],</span>
+<span class="sd">                                       [ 28.        ,   4.57142857]])</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry = NaturalSlope(surfaceCoords)</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry.plotSlope()</span>
+
+<span class="sd">            .. plot::</span>
+
+<span class="sd">                from numpy import array</span>
+<span class="sd">                from slopegeometry import NaturalSlope</span>
+<span class="sd">                surfaceCoords = array([[  0.        ,  16.57142857],</span>
+<span class="sd">                                       [ 10.        ,  16.57142857],</span>
+<span class="sd">                                       [ 18.        ,   4.57142857],</span>
+<span class="sd">                                       [ 28.        ,   4.57142857]])</span>
+<span class="sd">                slopeGeometry = NaturalSlope(surfaceCoords)</span>
+<span class="sd">                slopeGeometry.plotSlope()</span>
+
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; surfaceCoords = array([[-2.4900, 18.1614],</span>
+<span class="sd">                                       [0.1022, 17.8824],</span>
+<span class="sd">                                       [1.6975, 17.2845],</span>
+<span class="sd">                                       [3.8909, 15.7301],</span>
+<span class="sd">                                       [5.8963, 14.3090],</span>
+<span class="sd">                                       [8.1183, 13.5779],</span>
+<span class="sd">                                       [9.8663, 13.0027],</span>
+<span class="sd">                                       [13.2865, 3.6058],</span>
+<span class="sd">                                       [20.2865, 3.6058],</span>
+<span class="sd">                                       [21.4347, 3.3231],</span>
+<span class="sd">                                       [22.2823, 2.7114],</span>
+<span class="sd">                                       [23.4751, 2.2252],</span>
+<span class="sd">                                       [24.6522, 1.2056],</span>
+<span class="sd">                                       [25.1701, 0.2488]])</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry = NaturalSlope(surfaceCoords)</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry.plotSlope()</span>
+
+<span class="sd">            .. plot::</span>
+
+<span class="sd">                from numpy import array</span>
+<span class="sd">                from slopegeometry import NaturalSlope</span>
+<span class="sd">                surfaceCoords = array([[-2.4900, 18.1614],</span>
+<span class="sd">                                       [0.1022, 17.8824],</span>
+<span class="sd">                                       [1.6975, 17.2845],</span>
+<span class="sd">                                       [3.8909, 15.7301],</span>
+<span class="sd">                                       [5.8963, 14.3090],</span>
+<span class="sd">                                       [8.1183, 13.5779],</span>
+<span class="sd">                                       [9.8663, 13.0027],</span>
+<span class="sd">                                       [13.2865, 3.6058],</span>
+<span class="sd">                                       [20.2865, 3.6058],</span>
+<span class="sd">                                       [21.4347, 3.3231],</span>
+<span class="sd">                                       [22.2823, 2.7114],</span>
+<span class="sd">                                       [23.4751, 2.2252],</span>
+<span class="sd">                                       [24.6522, 1.2056],</span>
+<span class="sd">                                       [25.1701, 0.2488]])</span>
+<span class="sd">                slopeGeometry = NaturalSlope(surfaceCoords)</span>
+<span class="sd">                slopeGeometry.plotSlope()</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-k&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;.k&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">return</span></div></div>
+
+
+<span class="c1"># %%</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">BSD 2 license.</span>
+
+<span class="sd">Copyright (c) 2016, Universidad Nacional de Colombia, Exneyder A.</span>
+<span class="sd">    Montoya-Araque and Ludger O. Suarez-Burgoa.</span>
+<span class="sd">All rights reserved.</span>
+
+<span class="sd">Redistribution and use in source and binary forms, with or without</span>
+<span class="sd">modification, are permitted provided that the following conditions are</span>
+<span class="sd">met:</span>
+
+<span class="sd">1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="sd">this list of conditions and the following disclaimer.</span>
+
+<span class="sd">2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="sd">notice, this list of conditions and the following disclaimer in the</span>
+<span class="sd">documentation and/or other materials provided with the distribution.</span>
+
+<span class="sd">THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS</span>
+<span class="sd">IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,</span>
+<span class="sd">THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR</span>
+<span class="sd">PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR</span>
+<span class="sd">CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,</span>
+<span class="sd">EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,</span>
+<span class="sd">PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR</span>
+<span class="sd">PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="sd">LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="sd">NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="sd">SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Andres Ariza-Triana and Lúdger O. Suárez Burgoa.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>circlespacking &mdash; BIMs Geometry Generator 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="BIMs Geometry Generator 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> BIMs Geometry Generator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BIMs Geometry Generator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>circlespacking</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for circlespacking</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module to define particular circular tangents in a closed polygon in</span>
+<span class="sd">:math:`\\mathbb{R}^2`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="c1"># %%</span>
+<div class="viewcode-block" id="pckCirclesInPolygon"><a class="viewcode-back" href="../circlespacking.html#circlespacking.pckCirclesInPolygon">[docs]</a><span class="k">class</span> <span class="nc">pckCirclesInPolygon</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;Creates an instance of an object that defines circular particles tangent</span>
+<span class="sd">    in a fractal way inside of a closed polygon in :math:`\\mathbb{R}^2`.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        coordinates ((n, 2) `numpy.ndarray`): Coordinates of vertices of the\</span>
+<span class="sd">        polygon.</span>
+<span class="sd">        depth (`int`): Depth fractal for each triangle that compose the\</span>
+<span class="sd">            triangular mesh. If this number is not given, then,\</span>
+<span class="sd">            the fractal generation of circles is done up to a circle\</span>
+<span class="sd">            reachs a radius to lower than the five percent of the\</span>
+<span class="sd">            incircle radius. Large values of `depth` might produce internal\</span>
+<span class="sd">            variables that tend to infinte, then a\</span>
+<span class="sd">            ``ValueError`` is produced with a warning message\</span>
+<span class="sd">            ``array must not contain infs or NaNs``.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The class ``pckCirclesInPolygon`` requires\</span>
+<span class="sd">        `NumPy &lt;http://www.numpy.org/&gt;`_,\</span>
+<span class="sd">        `Matplotlib &lt;https://matplotlib.org/&gt;`_ and\</span>
+<span class="sd">        `Triangle &lt;http://dzhelil.info/triangle/&gt;`_</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">        &gt;&gt;&gt; from circlespacking import pckCirclesInPolygon</span>
+<span class="sd">        &gt;&gt;&gt; coords = array([[1, 1], [2, 5], [4.5, 6], [8, 3], [7, 1], [4, 0]])</span>
+<span class="sd">        &gt;&gt;&gt; pckCircles = pckCirclesInPolygon(coords)</span>
+<span class="sd">        &gt;&gt;&gt; pckCircles.__dict__.keys()</span>
+<span class="sd">        dict_keys([&#39;coordinates&#39;, &#39;depth&#39;, &#39;CDT&#39;, &#39;listCircles&#39;])</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for initializing the attributes of the class.&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
+        <span class="c1"># initializing methods</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trianglesMesh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">()</span>
+
+<div class="viewcode-block" id="pckCirclesInPolygon.trianglesMesh"><a class="viewcode-back" href="../circlespacking.html#circlespacking.pckCirclesInPolygon.trianglesMesh">[docs]</a>    <span class="k">def</span> <span class="nf">trianglesMesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to generate a triangles mesh in a polygon by using</span>
+<span class="sd">        `Constrained Delaunay triangulation\</span>
+<span class="sd">         &lt;https://en.wikipedia.org/wiki/Constrained_Delaunay_triangulation&gt;`_.</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">            verts ((n, 3, 2) `numpy.ndarray`): Vertices of each triangle that\</span>
+<span class="sd">                compose the triangular mesh. n means the number of triangles;\</span>
+<span class="sd">                (3, 2) means the index vertices and the coordinates (x, y)\</span>
+<span class="sd">                respectively.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; from basegeometry import Polygon</span>
+<span class="sd">            &gt;&gt;&gt; from circlespacking import pckCirclesInPolygon</span>
+<span class="sd">            &gt;&gt;&gt; coordinates = array([[1, 1], [2, 5], [4.5, 6], [6, 4], [8, 3],</span>
+<span class="sd">                                     [7, 1], [4.5, 1], [4, 0]])</span>
+<span class="sd">            &gt;&gt;&gt; polygon = Polygon(coordinates)</span>
+<span class="sd">            &gt;&gt;&gt; boundCoords = polygon.boundCoords</span>
+<span class="sd">            &gt;&gt;&gt; pckCircles = pckCirclesInPolygon(boundCoords)</span>
+<span class="sd">            &gt;&gt;&gt; verts = pckCircles.trianglesMesh()</span>
+
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; from basegeometry import Polygon</span>
+<span class="sd">            &gt;&gt;&gt; from circlespacking import pckCirclesInPolygon</span>
+<span class="sd">            &gt;&gt;&gt; coordinates = array([[2, 2], [2, 6], [8, 6], [8, 2]])</span>
+<span class="sd">            &gt;&gt;&gt; polygon = Polygon(coordinates)</span>
+<span class="sd">            &gt;&gt;&gt; boundCoords= polygon.boundCoords</span>
+<span class="sd">            &gt;&gt;&gt; pckCircles = pckCirclesInPolygon(boundCoords)</span>
+<span class="sd">            &gt;&gt;&gt; verts =  pckCircles.trianglesMesh()</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">from</span> <span class="nn">triangle</span> <span class="k">import</span> <span class="n">triangulate</span>
+
+        <span class="c1"># polygon area by applying the gauss equation</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">indexSegmts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">index</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="p">[</span><span class="mi">0</span><span class="p">]))))</span>
+        <span class="c1"># Max area of the triangles in the Constrained Delaunay triangulation</span>
+        <span class="n">maxArea</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.25</span> <span class="o">*</span> <span class="n">area</span><span class="p">)</span>
+        <span class="n">steinerPts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+        <span class="c1"># constrained Delaunay triangulation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CDT</span> <span class="o">=</span> <span class="n">triangulate</span><span class="p">(</span><span class="n">tri</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;vertices&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                               <span class="s1">&#39;segments&#39;</span><span class="p">:</span> <span class="n">indexSegmts</span><span class="p">},</span>
+                               <span class="n">opts</span><span class="o">=</span><span class="s1">&#39;pq20a&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">maxArea</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;S&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">steinerPts</span><span class="p">))</span>
+        <span class="n">vertsIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CDT</span><span class="p">[</span><span class="s1">&#39;vertices&#39;</span><span class="p">]</span>
+        <span class="n">trianglesIndex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CDT</span><span class="p">[</span><span class="s1">&#39;triangles&#39;</span><span class="p">]</span>
+        <span class="n">verts</span> <span class="o">=</span> <span class="n">vertsIndex</span><span class="p">[</span><span class="n">trianglesIndex</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">verts</span></div>
+
+<div class="viewcode-block" id="pckCirclesInPolygon.generator"><a class="viewcode-back" href="../circlespacking.html#circlespacking.pckCirclesInPolygon.generator">[docs]</a>    <span class="k">def</span> <span class="nf">generator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to generate circular particles in each triangle of the</span>
+<span class="sd">        triangular mesh.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            listCircles (`list` of Circle objects): `list` that contain all\</span>
+<span class="sd">                the circles object packed in the polygon.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; from circlespacking import pckCirclesInPolygon</span>
+<span class="sd">            &gt;&gt;&gt; coords = array([[2, 2], [2, 6], [8, 6], [8, 2]])</span>
+<span class="sd">            &gt;&gt;&gt; pckCircles = pckCirclesInPolygon(coords)</span>
+<span class="sd">            &gt;&gt;&gt; lstCircles = pckCircles.generator() # list of circles</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="kn">from</span> <span class="nn">basegeometry</span> <span class="k">import</span> <span class="n">Triangle</span>
+
+        <span class="n">vertsTriangles</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trianglesMesh</span><span class="p">()</span>  <span class="c1"># Triangles mesh in polygon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">listCircles</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">vert</span> <span class="ow">in</span> <span class="n">vertsTriangles</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">listCircles</span> <span class="o">+=</span> <span class="n">Triangle</span><span class="p">(</span><span class="n">vert</span><span class="p">)</span><span class="o">.</span><span class="n">packCircles</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+                                                           <span class="n">want2plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">listCircles</span></div>
+
+<div class="viewcode-block" id="pckCirclesInPolygon.plot"><a class="viewcode-back" href="../circlespacking.html#circlespacking.pckCirclesInPolygon.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plotTriMesh</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for show a graphic of the circles generated within of the</span>
+<span class="sd">        polyhon.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            plotTriMesh (`bool`): Variable to check if it also want to show\</span>
+<span class="sd">                the graph of the triangles mesh. The default value is ``False``</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">            .. plot::</span>
+
+<span class="sd">                from numpy import array</span>
+<span class="sd">                from basegeometry import Polygon</span>
+<span class="sd">                from circlespacking import pckCirclesInPolygon</span>
+<span class="sd">                coordinates = array([[1, 1], [2, 5], [4.5, 6], [8, 3], [7, 1],</span>
+<span class="sd">                                     [4, 0]])</span>
+<span class="sd">                polygon = Polygon(coordinates)</span>
+<span class="sd">                boundCoords = polygon.boundCoords</span>
+<span class="sd">                pckCircles = pckCirclesInPolygon(boundCoords, depth=5)</span>
+<span class="sd">                pckCircles.plot(plotTriMesh=True)</span>
+
+
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; from basegeometry import Polygon</span>
+<span class="sd">            &gt;&gt;&gt; from circlespacking import pckCirclesInPolygon</span>
+<span class="sd">            &gt;&gt;&gt; coordinates = array([[1, 1], [2, 5], [4.5, 6], [6, 4], [8, 3],</span>
+<span class="sd">                                     [7, 1], [4.5, 1], [4, 0]])</span>
+<span class="sd">            &gt;&gt;&gt; polygon = Polygon(coordinates)</span>
+<span class="sd">            &gt;&gt;&gt; boundCoords = polygon.boundCoords</span>
+<span class="sd">            &gt;&gt;&gt; pckCircles = pckCirclesInPolygon(boundCoords)</span>
+<span class="sd">            &gt;&gt;&gt; pckCircles.plot()</span>
+
+<span class="sd">            &gt;&gt;&gt; from slopegeometry import AnthropicSlope</span>
+<span class="sd">            &gt;&gt;&gt; from circlespacking import pckCirclesInPolygon</span>
+<span class="sd">            &gt;&gt;&gt; slopeGeometry = AnthropicSlope(12, [1, 1.5], 10, 10)</span>
+<span class="sd">            &gt;&gt;&gt; boundCoords = slopeGeometry.boundCoords</span>
+<span class="sd">            &gt;&gt;&gt; pckCircles = pckCirclesInPolygon(boundCoords)</span>
+<span class="sd">            &gt;&gt;&gt; pckCircles.plot(plotTriMesh=True)</span>
+
+<span class="sd">            .. plot::</span>
+
+<span class="sd">                from numpy import array</span>
+<span class="sd">                from slopegeometry import NaturalSlope</span>
+<span class="sd">                from circlespacking import pckCirclesInPolygon</span>
+<span class="sd">                surfaceCoords = array([[-2.4900, 18.1614],</span>
+<span class="sd">                                       [0.1022, 17.8824],</span>
+<span class="sd">                                       [1.6975, 17.2845],</span>
+<span class="sd">                                       [3.8909, 15.7301],</span>
+<span class="sd">                                       [5.8963, 14.3090],</span>
+<span class="sd">                                       [8.1183, 13.5779],</span>
+<span class="sd">                                       [9.8663, 13.0027],</span>
+<span class="sd">                                       [13.2865, 3.6058],</span>
+<span class="sd">                                       [20.2865, 3.6058],</span>
+<span class="sd">                                       [21.4347, 3.3231],</span>
+<span class="sd">                                       [22.2823, 2.7114],</span>
+<span class="sd">                                       [23.4751, 2.2252],</span>
+<span class="sd">                                       [24.6522, 1.2056],</span>
+<span class="sd">                                       [25.1701, 0.2488]])</span>
+<span class="sd">                slopeGeometry = NaturalSlope(surfaceCoords)</span>
+<span class="sd">                boundCoords = slopeGeometry.boundCoords</span>
+<span class="sd">                pckCircles = pckCirclesInPolygon(boundCoords)</span>
+<span class="sd">                pckCircles.plot(plotTriMesh=True)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+        <span class="kn">from</span> <span class="nn">triangle</span> <span class="k">import</span> <span class="n">plot</span> <span class="k">as</span> <span class="n">tplot</span>
+
+        <span class="c1"># plotting</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])),</span>
+                <span class="s1">&#39;-k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Polygon&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$x$ distance&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;$y$ distance&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">circle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">listCircles</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="n">circle</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                    <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">))</span>
+        <span class="c1"># plotting triangular mesh</span>
+        <span class="k">if</span> <span class="n">plotTriMesh</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">tplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">CDT</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="pckCirclesInPolygon.frecuencyHist"><a class="viewcode-back" href="../circlespacking.html#circlespacking.pckCirclesInPolygon.frecuencyHist">[docs]</a>    <span class="k">def</span> <span class="nf">frecuencyHist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to show the histogram of the diameters of the circular</span>
+<span class="sd">        particles packed in a closed polygon in :math:`\\mathbb{R}^2`.</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">            .. plot::</span>
+
+<span class="sd">                from numpy import array</span>
+<span class="sd">                from basegeometry import Polygon</span>
+<span class="sd">                from circlespacking import pckCirclesInPolygon</span>
+<span class="sd">                coordinates = array([[1, 1], [2, 5], [4.5, 6], [6, 4], [8, 3],</span>
+<span class="sd">                                     [7, 1], [4.5, 1], [4, 0]])</span>
+<span class="sd">                polygon = Polygon(coordinates)</span>
+<span class="sd">                boundCoords = polygon.boundCoords</span>
+<span class="sd">                pckCircles = pckCirclesInPolygon(boundCoords, 10)</span>
+<span class="sd">                pckCircles.frecuencyHist()</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">import</span> <span class="nn">math</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+        <span class="c1"># Obtaining diameters histogram</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listCircles</span><span class="p">)</span>  <span class="c1"># simple size</span>
+        <span class="c1"># Number of bins according to Sturges equation</span>
+        <span class="n">numBins</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">diams</span> <span class="o">=</span> <span class="p">[</span><span class="n">circle</span><span class="o">.</span><span class="n">diameter</span> <span class="k">for</span> <span class="n">circle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">listCircles</span><span class="p">]</span>
+        <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">diams</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">diams</span><span class="p">),</span> <span class="n">numBins</span><span class="p">)</span>
+        <span class="c1"># plotting</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;seaborn-white&#39;</span><span class="p">)</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">diams</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Diameters&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Frecuency&#39;</span><span class="p">)</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="pckCirclesInPolygon.loglogDiagram"><a class="viewcode-back" href="../circlespacking.html#circlespacking.pckCirclesInPolygon.loglogDiagram">[docs]</a>    <span class="k">def</span> <span class="nf">loglogDiagram</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to show the log-log graph of the diameters and quantities</span>
+<span class="sd">        of circular particles packed in a closed polygon in</span>
+<span class="sd">        :math:`\\mathbb{R}^2`.</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">            .. plot::</span>
+
+<span class="sd">                from numpy import array</span>
+<span class="sd">                from basegeometry import Polygon</span>
+<span class="sd">                from circlespacking import pckCirclesInPolygon</span>
+<span class="sd">                coordinates = array([[1, 1], [2, 5], [4.5, 6], [6, 4], [8, 3],</span>
+<span class="sd">                                     [7, 1], [4.5, 1], [4, 0]])</span>
+<span class="sd">                polygon = Polygon(coordinates)</span>
+<span class="sd">                boundCoords = polygon.boundCoords</span>
+<span class="sd">                pckCircles = pckCirclesInPolygon(boundCoords, 10)</span>
+<span class="sd">                pckCircles.loglogDiagram()</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">import</span> <span class="nn">math</span>
+
+        <span class="c1"># Obtaining diameters histogram</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">listCircles</span><span class="p">)</span>  <span class="c1"># simple size</span>
+        <span class="c1"># Number of bins according to Sturges equation</span>
+        <span class="n">numBins</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">diams</span> <span class="o">=</span> <span class="p">[</span><span class="n">circle</span><span class="o">.</span><span class="n">diameter</span> <span class="k">for</span> <span class="n">circle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">listCircles</span><span class="p">]</span>
+        <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">diams</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">diams</span><span class="p">),</span> <span class="n">numBins</span><span class="p">)</span>
+        <span class="n">hist</span><span class="p">,</span> <span class="n">binEdges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">diams</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+        <span class="n">nonZeroIndx</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hist</span><span class="p">)</span> <span class="k">if</span> <span class="n">k</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">histRed</span> <span class="o">=</span> <span class="n">hist</span><span class="p">[</span><span class="n">nonZeroIndx</span><span class="p">]</span>
+        <span class="n">histRedRel</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">n</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">histRed</span><span class="p">]</span>
+        <span class="n">nonZeroIndx4Bins</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">nonZeroIndx</span><span class="p">]</span>
+        <span class="n">binEdgesRed</span> <span class="o">=</span> <span class="n">binEdges</span><span class="p">[</span><span class="n">nonZeroIndx4Bins</span><span class="p">]</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">binEdgesRed</span>
+        <span class="n">nD</span> <span class="o">=</span> <span class="n">histRedRel</span>
+        <span class="c1"># plotting</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">nD</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">,</span> <span class="n">basex</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">return</span></div></div>
+
+
+<span class="c1"># %%</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">BSD 2 license.</span>
+
+<span class="sd">Copyright (c) 2018, Universidad Nacional de Colombia, Andres Ariza-Triana</span>
+<span class="sd">and Ludger O. Suarez-Burgoa.</span>
+<span class="sd">All rights reserved.</span>
+
+<span class="sd">Redistribution and use in source and binary forms, with or without</span>
+<span class="sd">modification, are permitted provided that the following conditions are</span>
+<span class="sd">met:</span>
+
+<span class="sd">1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="sd">this list of conditions and the following disclaimer.</span>
+
+<span class="sd">2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="sd">notice, this list of conditions and the following disclaimer in the</span>
+<span class="sd">documentation and/or other materials provided with the distribution.</span>
+
+<span class="sd">THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS</span>
+<span class="sd">IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,</span>
+<span class="sd">THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR</span>
+<span class="sd">PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR</span>
+<span class="sd">CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,</span>
+<span class="sd">EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,</span>
+<span class="sd">PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR</span>
+<span class="sd">PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="sd">LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="sd">NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="sd">SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Andres Ariza-Triana and Lúdger O. Suárez Burgoa.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

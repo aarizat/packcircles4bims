@@ -1,0 +1,418 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. circlespacking module &mdash; BIMs Geometry Generator 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="BIMs Geometry Generator 0.1 documentation" href="index.html"/>
+        <link rel="up" title="Documentation" href="modules.html"/>
+        <link rel="prev" title="2. slopegeometry module" href="slopegeometry.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BIMs Geometry Generator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="basegeometry.html">1. basegeometry module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="slopegeometry.html">2. slopegeometry module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. circlespacking module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BIMs Geometry Generator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">Documentation</a> &raquo;</li>
+        
+      <li>3. circlespacking module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/circlespacking.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-circlespacking">
+<span id="circlespacking-module"></span><h1>3. circlespacking module<a class="headerlink" href="#module-circlespacking" title="Permalink to this headline">¶</a></h1>
+<p>Module to define particular circular tangents in a closed polygon in
+<span class="math">\(\mathbb{R}^2\)</span>.</p>
+<dl class="class">
+<dt id="circlespacking.pckCirclesInPolygon">
+<em class="property">class </em><code class="descclassname">circlespacking.</code><code class="descname">pckCirclesInPolygon</code><span class="sig-paren">(</span><em>coordinates</em>, <em>depth=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/circlespacking.html#pckCirclesInPolygon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#circlespacking.pckCirclesInPolygon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Creates an instance of an object that defines circular particles tangent
+in a fractal way inside of a closed polygon in <span class="math">\(\mathbb{R}^2\)</span>.</p>
+<dl class="attribute">
+<dt id="circlespacking.pckCirclesInPolygon.coordinates">
+<code class="descname">coordinates</code><a class="headerlink" href="#circlespacking.pckCirclesInPolygon.coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>(n, 2) <cite>numpy.ndarray</cite> – Coordinates of vertices of the        polygon.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="circlespacking.pckCirclesInPolygon.depth">
+<code class="descname">depth</code><a class="headerlink" href="#circlespacking.pckCirclesInPolygon.depth" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>int</cite> – Depth fractal for each triangle that compose the            triangular mesh. If this number is not given, then,            the fractal generation of circles is done up to a circle            reachs a radius to lower than the five percent of the            incircle radius. Large values of <cite>depth</cite> might produce internal            variables that tend to infinte, then a            <code class="docutils literal"><span class="pre">ValueError</span></code> is produced with a warning message            <code class="docutils literal"><span class="pre">array</span> <span class="pre">must</span> <span class="pre">not</span> <span class="pre">contain</span> <span class="pre">infs</span> <span class="pre">or</span> <span class="pre">NaNs</span></code>.</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The class <code class="docutils literal"><span class="pre">pckCirclesInPolygon</span></code> requires        <a class="reference external" href="http://www.numpy.org/">NumPy</a>,        <a class="reference external" href="https://matplotlib.org/">Matplotlib</a> and        <a class="reference external" href="http://dzhelil.info/triangle/">Triangle</a></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">circlespacking</span> <span class="k">import</span> <span class="n">pckCirclesInPolygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coords</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pckCircles</span> <span class="o">=</span> <span class="n">pckCirclesInPolygon</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pckCircles</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">dict_keys([&#39;coordinates&#39;, &#39;depth&#39;, &#39;CDT&#39;, &#39;listCircles&#39;])</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="circlespacking.pckCirclesInPolygon.trianglesMesh">
+<code class="descname">trianglesMesh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/circlespacking.html#pckCirclesInPolygon.trianglesMesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#circlespacking.pckCirclesInPolygon.trianglesMesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate a triangles mesh in a polygon by using
+<a class="reference external" href="https://en.wikipedia.org/wiki/Constrained_Delaunay_triangulation">Constrained Delaunay triangulation</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Vertices of each triangle that                compose the triangular mesh. n means the number of triangles;                (3, 2) means the index vertices and the coordinates (x, y)                respectively.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">verts ((n, 3, 2) <cite>numpy.ndarray</cite>)</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">basegeometry</span> <span class="k">import</span> <span class="n">Polygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">circlespacking</span> <span class="k">import</span> <span class="n">pckCirclesInPolygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="go">                         [7, 1], [4.5, 1], [4, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">boundCoords</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">boundCoords</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pckCircles</span> <span class="o">=</span> <span class="n">pckCirclesInPolygon</span><span class="p">(</span><span class="n">boundCoords</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verts</span> <span class="o">=</span> <span class="n">pckCircles</span><span class="o">.</span><span class="n">trianglesMesh</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">basegeometry</span> <span class="k">import</span> <span class="n">Polygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">circlespacking</span> <span class="k">import</span> <span class="n">pckCirclesInPolygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">boundCoords</span><span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">boundCoords</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pckCircles</span> <span class="o">=</span> <span class="n">pckCirclesInPolygon</span><span class="p">(</span><span class="n">boundCoords</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">verts</span> <span class="o">=</span>  <span class="n">pckCircles</span><span class="o">.</span><span class="n">trianglesMesh</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="circlespacking.pckCirclesInPolygon.generator">
+<code class="descname">generator</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/circlespacking.html#pckCirclesInPolygon.generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#circlespacking.pckCirclesInPolygon.generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to generate circular particles in each triangle of the
+triangular mesh.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><cite>list</cite> that contain all                the circles object packed in the polygon.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">listCircles (<cite>list</cite> of Circle objects)</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">circlespacking</span> <span class="k">import</span> <span class="n">pckCirclesInPolygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coords</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pckCircles</span> <span class="o">=</span> <span class="n">pckCirclesInPolygon</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lstCircles</span> <span class="o">=</span> <span class="n">pckCircles</span><span class="o">.</span><span class="n">generator</span><span class="p">()</span> <span class="c1"># list of circles</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="circlespacking.pckCirclesInPolygon.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>plotTriMesh=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/circlespacking.html#pckCirclesInPolygon.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#circlespacking.pckCirclesInPolygon.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for show a graphic of the circles generated within of the
+polyhon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plotTriMesh</strong> (<cite>bool</cite>) – Variable to check if it also want to show                the graph of the triangles mesh. The default value is <code class="docutils literal"><span class="pre">False</span></code></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<p>(<a class="reference external" href=".//circlespacking-1.py">Source code</a>)</p>
+<div class="figure" id="id1">
+<img alt="_images/circlespacking-1_00.png" src="_images/circlespacking-1_00.png" />
+<p class="caption"><span class="caption-text">(<a class="reference external" href=".//circlespacking-1_00.png">png</a>, <a class="reference external" href=".//circlespacking-1_00.hires.png">hires.png</a>, <a class="reference external" href=".//circlespacking-1_00.pdf">pdf</a>)</span></p>
+</div>
+<div class="figure" id="id2">
+<img alt="_images/circlespacking-1_01.png" src="_images/circlespacking-1_01.png" />
+<p class="caption"><span class="caption-text">(<a class="reference external" href=".//circlespacking-1_01.png">png</a>, <a class="reference external" href=".//circlespacking-1_01.hires.png">hires.png</a>, <a class="reference external" href=".//circlespacking-1_01.pdf">pdf</a>)</span></p>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">basegeometry</span> <span class="k">import</span> <span class="n">Polygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">circlespacking</span> <span class="k">import</span> <span class="n">pckCirclesInPolygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="go">                         [7, 1], [4.5, 1], [4, 0]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">polygon</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">boundCoords</span> <span class="o">=</span> <span class="n">polygon</span><span class="o">.</span><span class="n">boundCoords</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pckCircles</span> <span class="o">=</span> <span class="n">pckCirclesInPolygon</span><span class="p">(</span><span class="n">boundCoords</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pckCircles</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">slopegeometry</span> <span class="k">import</span> <span class="n">AnthropicSlope</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">circlespacking</span> <span class="k">import</span> <span class="n">pckCirclesInPolygon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">slopeGeometry</span> <span class="o">=</span> <span class="n">AnthropicSlope</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">],</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">boundCoords</span> <span class="o">=</span> <span class="n">slopeGeometry</span><span class="o">.</span><span class="n">boundCoords</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pckCircles</span> <span class="o">=</span> <span class="n">pckCirclesInPolygon</span><span class="p">(</span><span class="n">boundCoords</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pckCircles</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">plotTriMesh</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//circlespacking-2.py">Source code</a>)</p>
+<div class="figure" id="id3">
+<img alt="_images/circlespacking-2_00.png" src="_images/circlespacking-2_00.png" />
+<p class="caption"><span class="caption-text">(<a class="reference external" href=".//circlespacking-2_00.png">png</a>, <a class="reference external" href=".//circlespacking-2_00.hires.png">hires.png</a>, <a class="reference external" href=".//circlespacking-2_00.pdf">pdf</a>)</span></p>
+</div>
+<div class="figure" id="id4">
+<img alt="_images/circlespacking-2_01.png" src="_images/circlespacking-2_01.png" />
+<p class="caption"><span class="caption-text">(<a class="reference external" href=".//circlespacking-2_01.png">png</a>, <a class="reference external" href=".//circlespacking-2_01.hires.png">hires.png</a>, <a class="reference external" href=".//circlespacking-2_01.pdf">pdf</a>)</span></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="circlespacking.pckCirclesInPolygon.frecuencyHist">
+<code class="descname">frecuencyHist</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/circlespacking.html#pckCirclesInPolygon.frecuencyHist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#circlespacking.pckCirclesInPolygon.frecuencyHist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to show the histogram of the diameters of the circular
+particles packed in a closed polygon in <span class="math">\(\mathbb{R}^2\)</span>.</p>
+<p class="rubric">Examples</p>
+<p>(<a class="reference external" href=".//circlespacking-3.py">Source code</a>, <a class="reference external" href=".//circlespacking-3.png">png</a>, <a class="reference external" href=".//circlespacking-3.hires.png">hires.png</a>, <a class="reference external" href=".//circlespacking-3.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/circlespacking-3.png" src="_images/circlespacking-3.png" />
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="circlespacking.pckCirclesInPolygon.loglogDiagram">
+<code class="descname">loglogDiagram</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/circlespacking.html#pckCirclesInPolygon.loglogDiagram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#circlespacking.pckCirclesInPolygon.loglogDiagram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to show the log-log graph of the diameters and quantities
+of circular particles packed in a closed polygon in
+<span class="math">\(\mathbb{R}^2\)</span>.</p>
+<p class="rubric">Examples</p>
+<p>(<a class="reference external" href=".//circlespacking-4.py">Source code</a>, <a class="reference external" href=".//circlespacking-4.png">png</a>, <a class="reference external" href=".//circlespacking-4.hires.png">hires.png</a>, <a class="reference external" href=".//circlespacking-4.pdf">pdf</a>)</p>
+<div class="figure">
+<img alt="_images/circlespacking-4.png" src="_images/circlespacking-4.png" />
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="slopegeometry.html" class="btn btn-neutral" title="2. slopegeometry module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Andres Ariza-Triana and Lúdger O. Suárez Burgoa.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,696 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>basegeometry &mdash; BIMs Geometry Generator 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="BIMs Geometry Generator 0.1 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> BIMs Geometry Generator
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BIMs Geometry Generator</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>basegeometry</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for basegeometry</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&#39;&#39;&#39;Module to define the ``Triangle``, ``Circle`` and ``Polygon`` classes. Some</span>
+<span class="sd">properties related to the geometry of these classes are determined.</span>
+<span class="sd">These classes are the basic inputs to pack circular particles in a</span>
+<span class="sd">closed polygon in :math:`\\mathbb{R}^2`.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<span class="c1"># %%</span>
+<div class="viewcode-block" id="Circle"><a class="viewcode-back" href="../basegeometry.html#basegeometry.Circle">[docs]</a><span class="k">class</span> <span class="nc">Circle</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;Creates an instance of an object that defines a Circle once the</span>
+<span class="sd">    cartesian coordinates of its center and the radius are given.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        center (`tuple` or `list`): (x, y)-cartesian coordinates of\</span>
+<span class="sd">            circle center.</span>
+<span class="sd">        radius (`float` or `int`): Length of the segment that joins the center\</span>
+<span class="sd">            with any point of the circumference.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; center, radius = (0, 0), 1</span>
+<span class="sd">        &gt;&gt;&gt; circle = Circle(center, radius)</span>
+<span class="sd">        &gt;&gt;&gt; circle.__dict__</span>
+<span class="sd">        {&#39;area&#39;: 3.141592653589793,</span>
+<span class="sd">         &#39;center&#39;: array([0, 0]),</span>
+<span class="sd">         &#39;curvature&#39;: 1.0,</span>
+<span class="sd">         &#39;diameter&#39;: 2,</span>
+<span class="sd">         &#39;perimeter&#39;: 6.283185307179586,</span>
+<span class="sd">         &#39;radius&#39;: 1}</span>
+
+<span class="sd">        &gt;&gt;&gt; center, radius = (2, 5), 2.5</span>
+<span class="sd">        &gt;&gt;&gt; circle = Circle(center, radius)</span>
+<span class="sd">        &gt;&gt;&gt; circle.__dict__</span>
+<span class="sd">        {&#39;area&#39;: 19.634954084936208,</span>
+<span class="sd">        &#39;center&#39;: array([2, 5]),</span>
+<span class="sd">        &#39;curvature&#39;: 0.4,</span>
+<span class="sd">        &#39;diameter&#39;: 5.0,</span>
+<span class="sd">        &#39;perimeter&#39;: 15.707963267948966,</span>
+<span class="sd">        &#39;radius&#39;: 2.5}</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The class ``Circle`` requires `NumPy &lt;http://www.numpy.org/&gt;`_</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for initializing the attributes of the class.&#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">center</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curvature</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">radius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diameter</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">radius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">perimeter</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+<div class="viewcode-block" id="Circle.descartesTheorem"><a class="viewcode-back" href="../basegeometry.html#basegeometry.Circle.descartesTheorem">[docs]</a>    <span class="k">def</span> <span class="nf">descartesTheorem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">circle1</span><span class="p">,</span> <span class="n">circle2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Method to determine the tangent circles of the `Descartes theorem\</span>
+<span class="sd">        &lt;https://en.wikipedia.org/wiki/Descartes%27_theorem#Special_cases&gt;`_.</span>
+
+<span class="sd">        To find centers of these circles, it calculates the</span>
+<span class="sd">        intersection points of two circles by using the construction of</span>
+<span class="sd">        triangles, proposed by `Paul Bourke, 1997\</span>
+<span class="sd">        &lt;http://paulbourke.net/geometry/circlesphere/&gt;`_.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            circle1 (`circle` object): Tangent circle to the circle object\</span>
+<span class="sd">                intantiated.</span>
+<span class="sd">            circle2 (`circle` object): Tangent circle to the circle object\</span>
+<span class="sd">                intantiated and to the `circle1`.</span>
+
+<span class="sd">       Returns:</span>
+<span class="sd">           circles (`tuple`): Each element of the tuple is a circle object.</span>
+
+<span class="sd">       Examples:</span>
+<span class="sd">           &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">           &gt;&gt;&gt; from basegeometry import Circle</span>
+<span class="sd">           &gt;&gt;&gt; # Special case Descartes&#39; Theorem (cicle with infite radius)</span>
+<span class="sd">           &gt;&gt;&gt; circle = Circle((4.405957, 2.67671461), 0.8692056336001268)</span>
+<span class="sd">           &gt;&gt;&gt; circle1 = Circle((3.22694724, 2.10008003), 0.4432620600509628)</span>
+<span class="sd">           &gt;&gt;&gt; c2, c3 = circle.descartesTheorem(circle1)</span>
+<span class="sd">           &gt;&gt;&gt; # plotting</span>
+<span class="sd">           &gt;&gt;&gt; plt.axes()</span>
+<span class="sd">           &gt;&gt;&gt; plt.gca().add_patch(plt.Circle(circle.center,</span>
+<span class="sd">                                   circle.radius, fill=False))</span>
+<span class="sd">           &gt;&gt;&gt; plt.gca().add_patch(plt.Circle(circle1.center,</span>
+<span class="sd">                                   circle1.radius, fill=False))</span>
+<span class="sd">           &gt;&gt;&gt; plt.gca().add_patch(plt.Circle(c2.center,</span>
+<span class="sd">                                   c2.radius, fc=&#39;r&#39;))</span>
+<span class="sd">           &gt;&gt;&gt; plt.gca().add_patch(plt.Circle(c3.center,</span>
+<span class="sd">                                   c3.radius, fc=&#39;r&#39;))</span>
+<span class="sd">           &gt;&gt;&gt; plt.axis(&#39;equal&#39;)</span>
+<span class="sd">           &gt;&gt;&gt; plt.show()</span>
+
+<span class="sd">           &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">           &gt;&gt;&gt; from basegeometry import Circle</span>
+<span class="sd">           &gt;&gt;&gt; # General case Descartes Theorem (three circle tangent mutually)</span>
+<span class="sd">           &gt;&gt;&gt; circle = Circle((4.405957, 2.67671461), 0.8692056336001268)</span>
+<span class="sd">           &gt;&gt;&gt; circle1 = Circle((3.22694724, 2.10008003), 0.4432620600509628)</span>
+<span class="sd">           &gt;&gt;&gt; circle2 = Circle((3.77641134, 1.87408749), 0.1508620255299397)</span>
+<span class="sd">           &gt;&gt;&gt; c3, c4 = circle.descartesTheorem(circle1, circle2)</span>
+<span class="sd">           &gt;&gt;&gt; # plotting</span>
+<span class="sd">           &gt;&gt;&gt; plt.axes()</span>
+<span class="sd">           &gt;&gt;&gt; plt.gca().add_patch(plt.Circle(circle.center,</span>
+<span class="sd">                                   circle.radius, fill=False))</span>
+<span class="sd">           &gt;&gt;&gt; plt.gca().add_patch(plt.Circle(circle1.center,</span>
+<span class="sd">                                   circle1.radius, fill=False))</span>
+<span class="sd">           &gt;&gt;&gt; plt.gca().add_patch(plt.Circle(circle2.center,</span>
+<span class="sd">                                   circle2.radius, fill=False))</span>
+<span class="sd">           &gt;&gt;&gt; plt.gca().add_patch(plt.Circle(c3.center,</span>
+<span class="sd">                                   c3.radius, fc=&#39;r&#39;))</span>
+<span class="sd">           &gt;&gt;&gt; plt.axis(&#39;equal&#39;)</span>
+<span class="sd">           &gt;&gt;&gt; plt.show()</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">circle2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Special case Descartes&#39; theorem</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curvature</span> <span class="o">+</span> <span class="n">circle1</span><span class="o">.</span><span class="n">curvature</span> <span class="o">+</span>
+                      <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curvature</span><span class="o">*</span><span class="n">circle1</span><span class="o">.</span><span class="n">curvature</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># General case Descartes Theorem</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curvature</span> <span class="o">+</span> <span class="n">circle1</span><span class="o">.</span><span class="n">curvature</span> <span class="o">+</span>
+                      <span class="n">circle2</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="n">circle2</span><span class="o">.</span><span class="n">curvature</span> <span class="o">+</span>
+                      <span class="mi">2</span><span class="o">*</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">curvature</span><span class="o">*</span><span class="n">circle1</span><span class="o">.</span><span class="n">curvature</span><span class="p">)</span> <span class="o">+</span>
+                         <span class="p">(</span><span class="n">circle1</span><span class="o">.</span><span class="n">curvature</span><span class="o">*</span><span class="n">circle2</span><span class="o">.</span><span class="n">curvature</span><span class="p">)</span> <span class="o">+</span>
+                         <span class="p">(</span><span class="n">circle2</span><span class="o">.</span><span class="n">curvature</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">curvature</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span><span class="o">**-</span><span class="mi">1</span>
+        <span class="c1"># Distances between centers and intersection points</span>
+        <span class="n">R1</span><span class="p">,</span> <span class="n">R2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="n">radius</span><span class="p">,</span> <span class="n">circle1</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="n">radius</span>
+        <span class="c1"># Distance between the centers of the intersected circles</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="n">circle1</span><span class="o">.</span><span class="n">radius</span>
+        <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span> <span class="o">=</span> <span class="p">(</span><span class="n">circle1</span><span class="o">.</span><span class="n">center</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">)</span> <span class="o">/</span> <span class="n">dist</span>
+        <span class="c1"># Distance to the chord</span>
+        <span class="n">chordDist</span> <span class="o">=</span> <span class="p">(</span><span class="n">R1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">R2</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dist</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">dist</span><span class="p">)</span>
+        <span class="c1"># Half-length of the chord</span>
+        <span class="n">halfChord</span> <span class="o">=</span> <span class="p">(</span><span class="n">R1</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">chordDist</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span>
+        <span class="n">center3</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">chordDist</span><span class="o">*</span><span class="n">cos</span> <span class="o">-</span> <span class="n">halfChord</span><span class="o">*</span><span class="n">sin</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">chordDist</span><span class="o">*</span><span class="n">sin</span> <span class="o">+</span> <span class="n">halfChord</span><span class="o">*</span><span class="n">cos</span><span class="p">)</span>
+        <span class="n">center4</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">chordDist</span><span class="o">*</span><span class="n">cos</span> <span class="o">+</span> <span class="n">halfChord</span><span class="o">*</span><span class="n">sin</span><span class="p">,</span>
+                   <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">chordDist</span><span class="o">*</span><span class="n">sin</span> <span class="o">-</span> <span class="n">halfChord</span><span class="o">*</span><span class="n">cos</span><span class="p">)</span>
+        <span class="n">circles</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="n">center3</span><span class="p">,</span> <span class="n">radius</span><span class="p">),</span> <span class="n">Circle</span><span class="p">(</span><span class="n">center4</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">circles</span></div></div>
+
+
+<span class="c1"># %%</span>
+<div class="viewcode-block" id="Triangle"><a class="viewcode-back" href="../basegeometry.html#basegeometry.Triangle">[docs]</a><span class="k">class</span> <span class="nc">Triangle</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;Creates an instance of an object that defines a Triangle once the</span>
+<span class="sd">    coordinates of its three vertices in cartesian :math:`\\mathbb{R}^2` space</span>
+<span class="sd">    are given.</span>
+
+<span class="sd">    It considers the usual notation for the triangle ``ABC`` in which `A`, `B`</span>
+<span class="sd">    and `C` represent the vertices and ``a``, ``b``, ``c`` are the</span>
+<span class="sd">    lengths of `the segments BC`, `CA` and `AB` respectively.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        coordinates ((3, 2) `numpy.ndarray`): Coordinates of three vertices\</span>
+<span class="sd">            of the triangle.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The class ``Triangle`` requires `NumPy &lt;http://www.numpy.org/&gt;`_,</span>
+<span class="sd">        `SciPy &lt;https://www.scipy.org/&gt;`_\</span>
+<span class="sd">        and `Matplotlib &lt;https://matplotlib.org/&gt;`_.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">        &gt;&gt;&gt; from basegeometry import Triangle</span>
+<span class="sd">        &gt;&gt;&gt; coords = array([(2, 1.5), (4.5, 4), (6, 2)])</span>
+<span class="sd">        &gt;&gt;&gt; triangle = Triangle(coords)</span>
+<span class="sd">        &gt;&gt;&gt; triangle.__dict__.keys()</span>
+<span class="sd">        dict_keys([&#39;vertices&#39;, &#39;area&#39;, &#39;sides&#39;, &#39;perimeter&#39;, &#39;distToIncenter&#39;,</span>
+<span class="sd">                   &#39;incircle&#39;])</span>
+
+<span class="sd">        &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">        &gt;&gt;&gt; from basegeometry import Triangle</span>
+<span class="sd">        &gt;&gt;&gt; coords = array([[2, 1], [6, 1], [4, 5.5]])</span>
+<span class="sd">        &gt;&gt;&gt; triangle = Triangle(coords)</span>
+<span class="sd">        &gt;&gt;&gt; triangle.__dict__.keys()</span>
+<span class="sd">        dict_keys([&#39;vertices&#39;, &#39;area&#39;, &#39;sides&#39;, &#39;perimeter&#39;, &#39;distToIncenter&#39;,</span>
+<span class="sd">                   &#39;incircle&#39;])</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for initializing the attributes of the class.&#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="s1">&#39;ABC&#39;</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">))</span>
+        <span class="c1"># same geometric properties of the triangle</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">getGeomProperties</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Triangle.getGeomProperties"><a class="viewcode-back" href="../basegeometry.html#basegeometry.Triangle.getGeomProperties">[docs]</a>    <span class="k">def</span> <span class="nf">getGeomProperties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to set the attributes to the instanced object</span>
+
+<span class="sd">        The established geometric attributes are the following:</span>
+<span class="sd">            * Area.</span>
+<span class="sd">            * Lenght of its three sides.</span>
+<span class="sd">            * Perimeter.</span>
+<span class="sd">            * Incircle (``Circle`` Object)</span>
+<span class="sd">            * Distance of each vertice to incenter.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="k">import</span> <span class="n">euclidean</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="n">vertsArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">vertsArray</span><span class="p">,</span> <span class="n">vertsArray</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="c1"># Area (Gauss Equation)</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="c1"># length three sides triangle.</span>
+        <span class="n">sides</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">euclidean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]),</span>
+                 <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="n">euclidean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">]),</span>
+                 <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="n">euclidean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">])}</span>
+        <span class="n">perimeter</span> <span class="o">=</span> <span class="n">sides</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">sides</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">sides</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
+        <span class="c1"># Inscribed circle radius</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">area</span> <span class="o">/</span> <span class="n">perimeter</span>
+        <span class="c1"># Inscribed circle center</span>
+        <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">sides</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">+</span>
+                  <span class="n">sides</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span> <span class="o">+</span>
+                  <span class="n">sides</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="n">perimeter</span>
+        <span class="c1"># Distances of each vertice to incenter</span>
+        <span class="n">distToIncenter</span> <span class="o">=</span> <span class="p">[</span><span class="n">euclidean</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="c1"># Set the attribute to the instanced object.</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">,</span> <span class="n">area</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;sides&#39;</span><span class="p">,</span> <span class="n">sides</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;perimeter&#39;</span><span class="p">,</span> <span class="n">perimeter</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;distToIncenter&#39;</span><span class="p">,</span> <span class="n">distToIncenter</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;incircle&#39;</span><span class="p">,</span> <span class="n">Circle</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">))</span>
+        <span class="k">return</span></div>
+
+<div class="viewcode-block" id="Triangle.packCircles"><a class="viewcode-back" href="../basegeometry.html#basegeometry.Triangle.packCircles">[docs]</a>    <span class="k">def</span> <span class="nf">packCircles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">want2plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method to pack circular particles within of a triangle. It apply</span>
+<span class="sd">        the Descartes theorem (special and general case) to generate mutually</span>
+<span class="sd">        tangent circles in a fractal way in the triangle.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            depth (`int`): Fractal depth. Number that indicate how many\</span>
+<span class="sd">                circles are fractally generated from the `incirle` to each\</span>
+<span class="sd">                vertice of the triangle. If this number is not given, then,\</span>
+<span class="sd">                the fractal generation of circles is done up to a circle\</span>
+<span class="sd">                reachs a radius to lower than the five percent of the\</span>
+<span class="sd">                incircle radius.</span>
+<span class="sd">            want2plot (`bool`): Variable to check if a plot is wanted.\</span>
+<span class="sd">                The default value is ``False``.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            listCircles (`list`): `list` that contains all the circular\</span>
+<span class="sd">                particles packed in the triangle.</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Large values of `depth` might produce internal variables that tend</span>
+<span class="sd">            to infinte, then a ``ValueError`` is produced with a warning</span>
+<span class="sd">            message ``array must not contain infs or NaNs``.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; from basegeometry import Triangle</span>
+<span class="sd">            &gt;&gt;&gt; coords = array([(2, 1.5), (4.5, 4), (6, 2)])</span>
+<span class="sd">            &gt;&gt;&gt; triangle = Triangle(coords)</span>
+<span class="sd">            &gt;&gt;&gt; cirsInTri = triangle.packCircles(depth=2, want2plot=True)</span>
+
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; from basegeometry import Triangle</span>
+<span class="sd">            &gt;&gt;&gt; coords = array([[2, 1], [6, 1], [4, 5.5]])</span>
+<span class="sd">            &gt;&gt;&gt; triangle = Triangle(coords)</span>
+<span class="sd">            &gt;&gt;&gt; cirsInTri = triangle.packCircles(depth=5, want2plot=True)</span>
+
+<span class="sd">            .. plot::</span>
+
+<span class="sd">                from numpy import array</span>
+<span class="sd">                from basegeometry import Triangle</span>
+<span class="sd">                coords = array([(2, 1), (2, 8), (7, 1)])</span>
+<span class="sd">                triangle = Triangle(coords)</span>
+<span class="sd">                triangle.packCircles(want2plot=True)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="k">import</span> <span class="n">euclidean</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+        <span class="n">listCircles</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">incircle</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">vert</span><span class="p">,</span> <span class="n">distance</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">distToIncenter</span><span class="p">):</span>
+            <span class="n">auxCircle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">incircle</span>
+            <span class="n">auxDist</span> <span class="o">=</span> <span class="n">distance</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">depth</span><span class="p">:</span>
+                <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">radius</span> <span class="o">=</span> <span class="p">(</span><span class="n">auxCircle</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">auxDist</span> <span class="o">-</span>
+                              <span class="n">auxCircle</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">auxCircle</span><span class="o">.</span><span class="n">radius</span><span class="o">+</span><span class="n">auxDist</span><span class="p">)</span>
+                    <span class="c1"># Checking condition stop</span>
+                    <span class="c1"># (circle with center on the bisectrix)</span>
+                    <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="mf">0.050</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">incircle</span><span class="o">.</span><span class="n">radius</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="n">dist</span> <span class="o">=</span> <span class="n">auxCircle</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="n">radius</span>  <span class="c1"># dist between centers</span>
+                    <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">auxCircle</span><span class="o">.</span><span class="n">center</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">dist</span><span class="o">/</span><span class="n">auxDist</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vert</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">auxCircle</span><span class="o">.</span><span class="n">center</span><span class="p">))</span>
+                    <span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+                    <span class="c1"># Genereting circles within triangle (Descartes circles)</span>
+                    <span class="n">c31</span><span class="p">,</span> <span class="n">c32</span> <span class="o">=</span> <span class="n">auxCircle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+                    <span class="n">c41</span><span class="p">,</span> <span class="n">c42</span> <span class="o">=</span> <span class="n">auxCircle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="n">c31</span><span class="p">)</span>
+                    <span class="n">c51</span><span class="p">,</span> <span class="n">c52</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">c31</span><span class="p">)</span>
+                    <span class="n">c61</span><span class="p">,</span> <span class="n">c62</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">c32</span><span class="p">)</span>
+                    <span class="n">c71</span><span class="p">,</span> <span class="n">c72</span> <span class="o">=</span> <span class="n">auxCircle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">c31</span><span class="p">)</span>
+                    <span class="n">c81</span><span class="p">,</span> <span class="n">c82</span> <span class="o">=</span> <span class="n">auxCircle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">c32</span><span class="p">)</span>
+                    <span class="n">listCircles</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">circle</span><span class="p">,</span> <span class="n">c31</span><span class="p">,</span> <span class="n">c32</span><span class="p">,</span> <span class="n">c41</span><span class="p">,</span> <span class="n">c42</span><span class="p">,</span> <span class="n">c52</span><span class="p">,</span> <span class="n">c61</span><span class="p">,</span>
+                                        <span class="n">c71</span><span class="p">,</span> <span class="n">c82</span><span class="p">))</span>
+                    <span class="c1"># Updating variables</span>
+                    <span class="n">auxDist</span> <span class="o">=</span> <span class="n">euclidean</span><span class="p">(</span><span class="n">vert</span><span class="p">,</span> <span class="n">circle</span><span class="o">.</span><span class="n">center</span><span class="p">)</span>
+                    <span class="n">auxCircle</span> <span class="o">=</span> <span class="n">circle</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">depth</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">radius</span> <span class="o">=</span> <span class="p">(</span><span class="n">auxCircle</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">auxDist</span> <span class="o">-</span>
+                              <span class="n">auxCircle</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">auxCircle</span><span class="o">.</span><span class="n">radius</span><span class="o">+</span><span class="n">auxDist</span><span class="p">)</span>
+                    <span class="n">dist</span> <span class="o">=</span> <span class="n">auxCircle</span><span class="o">.</span><span class="n">radius</span> <span class="o">+</span> <span class="n">radius</span>  <span class="c1"># dist between centers</span>
+                    <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">auxCircle</span><span class="o">.</span><span class="n">center</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">dist</span><span class="o">/</span><span class="n">auxDist</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+                            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vert</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">auxCircle</span><span class="o">.</span><span class="n">center</span><span class="p">))</span>
+                    <span class="n">circle</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+                    <span class="c1"># Genereting circles within triangle (Descartes circles)</span>
+                    <span class="n">c31</span><span class="p">,</span> <span class="n">c32</span> <span class="o">=</span> <span class="n">auxCircle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+                    <span class="n">c41</span><span class="p">,</span> <span class="n">c42</span> <span class="o">=</span> <span class="n">auxCircle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="n">c31</span><span class="p">)</span>
+                    <span class="n">c51</span><span class="p">,</span> <span class="n">c52</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">c31</span><span class="p">)</span>
+                    <span class="n">c61</span><span class="p">,</span> <span class="n">c62</span> <span class="o">=</span> <span class="n">circle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">c32</span><span class="p">)</span>
+                    <span class="n">c71</span><span class="p">,</span> <span class="n">c72</span> <span class="o">=</span> <span class="n">auxCircle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">c31</span><span class="p">)</span>
+                    <span class="n">c81</span><span class="p">,</span> <span class="n">c82</span> <span class="o">=</span> <span class="n">auxCircle</span><span class="o">.</span><span class="n">descartesTheorem</span><span class="p">(</span><span class="n">c32</span><span class="p">)</span>
+                    <span class="n">listCircles</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">circle</span><span class="p">,</span> <span class="n">c31</span><span class="p">,</span> <span class="n">c32</span><span class="p">,</span> <span class="n">c41</span><span class="p">,</span> <span class="n">c42</span><span class="p">,</span> <span class="n">c52</span><span class="p">,</span> <span class="n">c61</span><span class="p">,</span>
+                                        <span class="n">c71</span><span class="p">,</span> <span class="n">c82</span><span class="p">))</span>
+                    <span class="c1"># Updating variables</span>
+                    <span class="n">auxDist</span> <span class="o">=</span> <span class="n">euclidean</span><span class="p">(</span><span class="n">vert</span><span class="p">,</span> <span class="n">circle</span><span class="o">.</span><span class="n">center</span><span class="p">)</span>
+                    <span class="n">auxCircle</span> <span class="o">=</span> <span class="n">circle</span>
+        <span class="c1"># Set the attribute to the instanced object.</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;listCircles&#39;</span><span class="p">,</span> <span class="n">listCircles</span><span class="p">)</span>
+        <span class="c1"># plotting</span>
+        <span class="k">if</span> <span class="n">want2plot</span><span class="p">:</span>
+            <span class="n">figure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotTriangle</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">circle</span> <span class="ow">in</span> <span class="n">listCircles</span><span class="p">:</span>
+                <span class="n">figure</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span><span class="n">circle</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="n">circle</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span>
+                                            <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">listCircles</span></div>
+
+<div class="viewcode-block" id="Triangle.plotTriangle"><a class="viewcode-back" href="../basegeometry.html#basegeometry.Triangle.plotTriangle">[docs]</a>    <span class="k">def</span> <span class="nf">plotTriangle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for show a graphic of the triangle object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            ax (`matplotlib.axes._subplots.AxesSubplot`): object associated\</span>
+<span class="sd">                with a matplotlib graphic.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; from basegeometry import Triangle</span>
+<span class="sd">            &gt;&gt;&gt; coords = array([(1, 1), (4, 8), (8, 5)])</span>
+<span class="sd">            &gt;&gt;&gt; triangle = Triangle(coords)</span>
+<span class="sd">            &gt;&gt;&gt; triangle.plotTriangle()</span>
+
+<span class="sd">            .. plot::</span>
+
+<span class="sd">                from numpy import array</span>
+<span class="sd">                from basegeometry import Triangle</span>
+<span class="sd">                coords = array([(2, 1), (2, 8), (7, 1)])</span>
+<span class="sd">                triangle = Triangle(coords)</span>
+<span class="sd">                triangle.plotTriangle()</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+        <span class="n">vert</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="c1"># plotting</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">vert</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vert</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">vert</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">vert</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])),</span>
+                <span class="s1">&#39;k-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Triangle&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ax</span></div></div>
+
+
+<span class="c1"># %%</span>
+<div class="viewcode-block" id="Polygon"><a class="viewcode-back" href="../basegeometry.html#basegeometry.Polygon">[docs]</a><span class="k">class</span> <span class="nc">Polygon</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;Creates an instance of an object that defines a Polygon once the</span>
+<span class="sd">    cartesian coordinates of its vertices are given.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        coordinates ((n, 2) `numpy.ndarray`): Coordinates of the vertices\</span>
+<span class="sd">            of the polygon.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for initializing the attributes of the class.&#39;&#39;&#39;</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">coordinates</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Polygon.area"><a class="viewcode-back" href="../basegeometry.html#basegeometry.Polygon.area">[docs]</a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for determine the area of the polygon.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            area (`float`): area of the polygon surface.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; from basegeometry import Polygon</span>
+<span class="sd">            &gt;&gt;&gt; coords = array([(1, 1), (4, 8), (8, 5)])</span>
+<span class="sd">            &gt;&gt;&gt; polygon = Polygon(coords)</span>
+<span class="sd">            &gt;&gt;&gt; polygon.area</span>
+<span class="sd">            18.5</span>
+
+<span class="sd">            &gt;&gt;&gt; from numpy import array</span>
+<span class="sd">            &gt;&gt;&gt; from basegeometry import Polygon</span>
+<span class="sd">            &gt;&gt;&gt; coords = array([[1, 1], [2, 5], [4.5, 6], [8, 3],</span>
+<span class="sd">                                [7, 1], [4, 0]])</span>
+<span class="sd">            &gt;&gt;&gt; polygon = Polygon(coords)</span>
+<span class="sd">            &gt;&gt;&gt; polygon.area</span>
+<span class="sd">            27.5</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># polygon area by applying the gauss equation</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="mi">0</span><span class="p">]))</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">,</span> <span class="n">area</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">area</span></div>
+
+<div class="viewcode-block" id="Polygon.plot"><a class="viewcode-back" href="../basegeometry.html#basegeometry.Polygon.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Method for show the graph of the polygon.</span>
+
+<span class="sd">        Examples:</span>
+
+<span class="sd">            .. plot::</span>
+
+<span class="sd">                from numpy import array</span>
+<span class="sd">                from basegeometry import Polygon</span>
+<span class="sd">                coords = array([[1, 1], [2, 5], [4.5, 6], [8, 3],</span>
+<span class="sd">                                [7, 1], [4, 0]])</span>
+<span class="sd">                polygon = Polygon(coords)</span>
+<span class="sd">                polygon.plot()</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">boundCoords</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;-k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinates</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;ok&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+        <span class="k">return</span></div></div>
+
+
+<span class="c1"># %%</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">BSD 2 license.</span>
+
+<span class="sd">Copyright (c) 2018, Universidad Nacional de Colombia, Andres Ariza-Triana</span>
+<span class="sd">and Ludger O. Suarez-Burgoa.</span>
+<span class="sd">All rights reserved.</span>
+
+<span class="sd">Redistribution and use in source and binary forms, with or without</span>
+<span class="sd">modification, are permitted provided that the following conditions are</span>
+<span class="sd">met:</span>
+
+<span class="sd">1. Redistributions of source code must retain the above copyright notice,</span>
+<span class="sd">this list of conditions and the following disclaimer.</span>
+
+<span class="sd">2. Redistributions in binary form must reproduce the above copyright</span>
+<span class="sd">notice, this list of conditions and the following disclaimer in the</span>
+<span class="sd">documentation and/or other materials provided with the distribution.</span>
+
+<span class="sd">THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS</span>
+<span class="sd">IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,</span>
+<span class="sd">THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR</span>
+<span class="sd">PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR</span>
+<span class="sd">CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,</span>
+<span class="sd">EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,</span>
+<span class="sd">PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR</span>
+<span class="sd">PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF</span>
+<span class="sd">LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING</span>
+<span class="sd">NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS</span>
+<span class="sd">SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Andres Ariza-Triana and Lúdger O. Suárez Burgoa.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
